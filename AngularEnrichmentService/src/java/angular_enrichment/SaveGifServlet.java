@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,20 +23,26 @@ import javax.sql.DataSource;
  *
  * @author czolb
  */
-@WebServlet(urlPatterns = "/saveGif")
+@WebServlet(urlPatterns = "/saveGif/*")
 public class SaveGifServlet extends HttpServlet {
 
     @Resource(lookup = "jdbc/AngularEnrichment")
     private DataSource ds;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        System.out.println("post method called");
-
+        
+        String queryStrings = req.getQueryString();
+        System.out.println(queryStrings);
+        
+        System.out.println("get method called");
+        
         String title = req.getParameter("title");
         String gifUrl = req.getParameter("gifUrl");
         String username = req.getParameter("username");
+        
+        System.out.println(title + gifUrl + username);
 
         String SQL = "INSERT INTO gif (Title, Url, User) values(?,?,?) ";
         try (Connection conn = ds.getConnection()) {
@@ -44,7 +51,6 @@ public class SaveGifServlet extends HttpServlet {
             ps.setString(2, gifUrl);
             ps.setString(3, username);
             ps.executeUpdate();
-            conn.commit();
             
 
         } catch (SQLException ex) {
