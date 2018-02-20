@@ -31,10 +31,7 @@ public class SaveGifServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        
-        String queryStrings = req.getQueryString();
-        System.out.println(queryStrings);
+      
         
         System.out.println("get method called");
         

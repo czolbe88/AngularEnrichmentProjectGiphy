@@ -8,6 +8,7 @@ package angular_enrichment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author czolb
  */
-@WebServlet(urlPatterns ="/getGif")
+@WebServlet(urlPatterns ="/getGif/*")
 public class RetrieveGifServlet extends HttpServlet {
     
     @Resource(lookup="jdbc/AngularEnrichment")
@@ -38,12 +39,17 @@ public class RetrieveGifServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
+        String user = req.getParameter("User");
+                
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        
+        String SQL = "select * from gif where User = ?";
         
         try(Connection conn = ds.getConnection()){
         
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from gif");
+            PreparedStatement ps = conn.prepareStatement(SQL);
+            ps.setString(1, user);
+            ResultSet rs = ps.executeQuery();
             while( rs.next()){
                 JsonObjectBuilder objB = Json.createObjectBuilder();
                 objB.add("Title", rs.getString("Title"));
