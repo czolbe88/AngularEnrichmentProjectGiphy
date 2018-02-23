@@ -1,7 +1,7 @@
 # AngularEnrichmentProjectGiphy
 
 Done by Gdip SA45 students :
-Alex Chow, A0052557A
+Alex Chow, A0052557A 
 Lee Wei Han, A0176177U
 Tan Chun Ket, A0176260H
 
